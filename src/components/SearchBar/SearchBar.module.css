@@ -1,0 +1,30 @@
+.header {
+  margin: 0 auto;
+  background-color: #4444b6;
+  display: flex;
+  justify-content: center;
+}
+
+.form {
+  padding: 10px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 500px;
+  padding: 10px 25px;
+  border-radius: 3px;
+}
+
+.iconSearch {
+  position: absolute;
+  left: 15px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.iconSearch:hover {
+  color: #4444b6;
+}
