@@ -7,6 +7,7 @@ export default function MoviesPage() {
   const [movies, setMovies] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
   const query = searchParams.get("query") || "";
+  const [inputValue, setInputValue] = useState(query);
 
   useEffect(() => {
     if (!query) return;
@@ -29,12 +30,18 @@ export default function MoviesPage() {
     const searchQuery = e.target.elements.query.value.trim();
     if (!searchQuery) return;
     setSearchParams({ query: searchQuery });
+    setInputValue("");
   };
 
   return (
     <div>
       <form onSubmit={handleSearch}>
-        <input type="text" defaultValue={query} name="query" />
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          name="query"
+        />
         <button type="submit">Search</button>
       </form>
       <MovieList movies={movies} />
