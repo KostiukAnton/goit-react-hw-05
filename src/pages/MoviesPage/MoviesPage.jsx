@@ -6,37 +6,35 @@ import MovieList from "../../components/MovieList/MovieList";
 export default function MoviesPage() {
   const [movies, setMovies] = useState([]);
   const [searchParams, setSearchParams] = useSearchParams();
-  const queryFromURL = searchParams.get("query") || "";
-  const [query, setQuery] = useState("");
+  const query = searchParams.get("query") || "";
 
   useEffect(() => {
-    if (!queryFromURL) return;
+    if (!query) return;
 
     const fetchMovies = async () => {
-      const results = await searchMovies(queryFromURL);
-      setMovies(results);
+      try {
+        setMovies([]);
+        const results = await searchMovies(query);
+        setMovies(results);
+      } catch (error) {
+        console.error("Error fetchMovies", error);
+      }
     };
 
     fetchMovies();
-  }, [queryFromURL]);
+  }, [query]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
-    if (!query.trim()) return;
-    const results = await searchMovies(query);
-    setMovies(results);
-    setSearchParams({ query });
-    setQuery("");
+    const searchQuery = e.target.elements.query.value.trim();
+    if (!searchQuery) return;
+    setSearchParams({ query: searchQuery });
   };
 
   return (
     <div>
       <form onSubmit={handleSearch}>
-        <input
-          type="text"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
+        <input type="text" defaultValue={query} name="query" />
         <button type="submit">Search</button>
       </form>
       <MovieList movies={movies} />

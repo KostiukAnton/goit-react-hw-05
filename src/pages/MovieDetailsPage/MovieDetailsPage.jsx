@@ -1,5 +1,11 @@
-import { useEffect, useState } from "react";
-import { useParams, Link, Outlet, useNavigate } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import {
+  useParams,
+  Link,
+  Outlet,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import { fetchMovieDetails } from "../../components/api";
 import css from "../MovieDetailsPage/MovieDetailsPage.module.css";
 import { VscArrowLeft } from "react-icons/vsc";
@@ -8,6 +14,8 @@ export default function MovieDetailsPage() {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const navigate = useNavigate();
+  const location = useLocation();
+  const backLinkRef = useRef(location.state?.from ?? "/movies");
 
   useEffect(() => {
     fetchMovieDetails(movieId).then(setMovie);
@@ -17,7 +25,7 @@ export default function MovieDetailsPage() {
 
   return (
     <div>
-      <button className={css.btn} onClick={() => navigate(-1)}>
+      <button className={css.btn} onClick={() => navigate(backLinkRef.current)}>
         <VscArrowLeft /> Go back
       </button>
       <div className={css.container}>
